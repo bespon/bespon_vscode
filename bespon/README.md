@@ -2,4 +2,4 @@
 
 Provides syntax highlighting for [BespON](https://bespon.org/).
 
-![Example](images/example.png)
+![Example](bespon/images/example.png)

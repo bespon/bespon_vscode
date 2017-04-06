@@ -1,0 +1,32 @@
+{
+    "name": "bespon",
+    "displayName": "BespON",
+    "description": "Syntax highlighting for BespON",
+    "version": "0.1.0",
+    "publisher": "gpoore",
+    "engines": {
+        "vscode": "^1.10.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "bespon",
+            "aliases": ["bespon"],
+            "extensions": [".bespon"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "bespon",
+            "scopeName": "source.bespon",
+            "path": "./syntaxes/bespon.tmLanguage.json"
+        }]
+    },
+    "homepage": "https://github.com/bespon/bespon_vscode",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bespon/bespon_vscode.git"
+    },
+    "license": "SEE LICENSE IN LICENSE.md"
+}

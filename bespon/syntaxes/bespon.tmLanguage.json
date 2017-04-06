@@ -1,0 +1,182 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "bespon",
+	"scopeName": "source.bespon",
+	"patterns": [
+		{
+			"name": "entity.name.section.start.bespon",
+			"match": "^\\|(?:===){1,30}[\t ]*(?:(\\*)(?=[\t ]*(?:#|$))|(?=[A-Za-z_\"'`]))",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"}
+			}
+		},
+		{
+			"name": "entity.name.section.end.bespon",
+			"match": "^\\|(?:===){1,30}/(?=[\t ]*(?:#|$))"
+		},
+		{
+        	"name": "comment.documentation.block.bespon",
+			"begin": "\\|((?:###){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [{}]
+		},
+		{
+        	"name":  "string.quoted.single.block.bespon",
+			"begin": "\\|((?:'''){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [
+				{
+					"include": "#string_escapes"
+				},
+				{
+					"include": "#invalid_string_escapes"
+				}
+			]
+		},
+		{
+        	"name":  "string.quoted.double.block.bespon",
+			"begin": "\\|((?:\"\"\"){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [
+				{
+					"include": "#string_escapes"
+				},
+				{
+					"include": "#invalid_string_escapes"
+				}
+			]
+		},
+		{
+        	"name":  "string.quoted.literal.block.bespon",
+			"begin": "\\|((?:```){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [{}]
+		},
+		{
+        	"name": "comment.line",
+			"match": "(?<!#)#(?!#).*"
+		},
+		{
+        	"name": "comment.documentation.inline.bespon",
+			"begin": "(?<!#)((?:###){1,30})(?!#)",
+			"end": "(?<!#)\\1(?!#)",
+			"patterns": [{}]
+		},
+		{
+        	"name":  "string.quoted.single.inline.singledelim.bespon",
+			"begin": "(?<!')('(?='(?!')|(?!')))",
+			"end": "'",
+			"patterns": [
+				{
+					"include": "#string_escapes"
+				},
+				{
+					"include": "#invalid_string_escapes"
+				}
+			]
+		},
+		{
+        	"name": "string.quoted.double.inline.singledelim.bespon",
+			"begin": "(?<!\")(\"(?=\"(?!\")|(?!\")))",
+			"end": "\"",
+			"patterns": [
+				{
+					"include": "#string_escapes"
+				},
+				{
+					"include": "#invalid_string_escapes"
+				}
+			]
+		},
+		{
+        	"name": "string.quoted.single.inline.multidelim.bespon",
+			"comment": "This will break when ending delim is preceded by enough escapes",
+			"begin": "(?<!')((?:'''){1,30})(?!')",
+			"end": "(?:(?<!')|(?<=^\\\\')|(?<=[^\\\\]\\\\')|(?<=[^\\\\]\\\\\\\\\\\\')|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\'))\\1(?!')",
+			"patterns": [
+				{
+					"include": "#string_escapes"
+				},
+				{
+					"include": "#invalid_string_escapes"
+				}
+			]
+		},
+		{
+        	"name": "string.quoted.double.inline.multidelim.bespon",
+			"comment": "This will break when ending delim is preceded by enough escapes",
+			"begin": "(?<!\")((?:\"\"\"){1,30})(?!\")",
+			"end": "(?:(?<!\")|(?<=^\\\\\")|(?<=[^\\\\]\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\"))\\1(?!\")",
+			"patterns": [
+				{
+					"include": "#string_escapes"
+				},
+				{
+					"include": "#invalid_string_escapes"
+				}
+			]
+		},
+		{
+        	"name": "string.quoted.literal.inline.bespon",
+			"begin": "(?<!`)(`{1,2}(?!`)|(?:```){1,30}(?!`))",
+			"end": "(?<!`)\\1(?!`)",
+			"patterns": [{}]
+		},
+		{
+			"name": "constant.numeric.float.bespon",
+			"comment": "'{0}'.format(bespon.grammar.RE_GRAMMAR['float'].replace('0x', '(0x)'))",
+			"match": "(?:(?:[+-][\\\t\\ ]*)?(0x)_?(?:[0-9a-f]+(?:_[0-9a-f]+)*(?:\\.[0-9a-f]+(?:_[0-9a-f]+)*(?:_?[pP][+-]?[0-9]+(?:_[0-9]+)*)?|_?[pP][+-]?[0-9]+(?:_[0-9]+)*)|[0-9A-F]+(?:_[0-9A-F]+)*(?:\\.[0-9A-F]+(?:_[0-9A-F]+)*(?:_?[pP][+-]?[0-9]+(?:_[0-9]+)*)?|_?[pP][+-]?[0-9]+(?:_[0-9]+)*))|(?:[+-][\\\t\\ ]*)?(?:inf|nan)|(?:[+-][\\\t\\ ]*)?(?:0|[1-9][0-9]*(?:_[0-9]+)*)(?:\\.[0-9]+(?:_[0-9]+)*(?:_?[eE][+-]?[0-9]+(?:_[0-9]+)*)?|_?[eE][+-]?[0-9]+(?:_[0-9]+)*))",
+			"captures":
+				{
+					"1": {"name": "storage.type.number.bespon"}
+				}
+		},
+		{
+			"name": "constant.numeric.int.bespon",
+			"comment": "'{0}'.format(bespon.grammar.RE_GRAMMAR['integer'].replace('0x', '(0x)').replace('0o', '(0o)').replace('0b', '(0b)'))",
+			"match": "(?:(?:[+-][\\\t\\ ]*)?(0x)_?(?:[0-9a-f]+(?:_[0-9a-f]+)*|[0-9A-F]+(?:_[0-9A-F]+)*)|(?:[+-][\\\t\\ ]*)?(0o)_?[0-7]+(?:_[0-7]+)*|(?:[+-][\\\t\\ ]*)?(0b)_?[01]+(?:_[01]+)*|(?:[+-][\\\t\\ ]*)?(?:0|[1-9][0-9]*(?:_[0-9]+)*))",
+			"captures":
+				{
+					"1": {"name": "storage.type.number.bespon"},
+					"2": {"name": "storage.type.number.bespon"},
+					"3": {"name": "storage.type.number.bespon"}
+				}
+		},
+		{
+        	"name": "constant.language.bespon",
+			"comment": "'(?:{0}|{1}|{2})(?!{3})'.format(bespon.grammar.RE_GRAMMAR['none_type'], bespon.grammar.RE_GRAMMAR['bool_true'], bespon.grammar.RE_GRAMMAR['bool_false'], bespon.grammar.RE_GRAMMAR['unquoted_continue_ascii'])",
+			"match": "(?:none|true|false)(?![0-9A-Z\\_a-z])"
+		},
+		{
+        	"name": "invalid.illegal.constant.language.bespon",
+			"comment": "'{0}(?!{1})'.format(bespon.grammar.RE_GRAMMAR['reserved_word'], bespon.grammar.RE_GRAMMAR['unquoted_continue_ascii'])",
+			"match": "(?:[Nn][Oo][Nn][Ee]|[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee]|[Ii][Nn][Ff]|[Nn][Aa][Nn])(?![0-9A-Z\\_a-z])"
+		},
+		{
+			"name": "string.unquoted.key.bespon",
+			"comment": "bespon.grammar.RE_GRAMMAR['unquoted_string_ascii']",
+			"match": "_*[A-Za-z][0-9A-Z\\_a-z]*"
+		},
+		{
+			"name": "keyword.operator.bespon",
+			"match": "^[\t ]*\\*|(?<=[0-9A-Z\\_a-z])\\.(?=[0-9A-Z\\_a-z])|[{}\\[\\]]|=(?![\t ]*=)|,(?![\t ]*,)"
+		},
+		{
+			"name": "invalid.illegal.bespon",
+			"match": "\\r(?!\\n)|[^\t \\n]"
+		}
+	],
+	"repository": {
+		"string_escapes": {
+			"name": "constant.character.escape.bespon",
+			"comment": "'{0}|{1}'.format(bespon.grammar.RE_GRAMMAR['unicode_escape'].split('|\\\\.')[0], '\\\\[{0}]'.format(re.escape(''.join(k[1] for k in bespon.grammar.SHORT_BACKSLASH_UNESCAPES))))",
+			"match": "\\\\x(?:[0-9a-f]{2}|[0-9A-F]{2})|\\\\u(?:[0-9a-f]{4}|[0-9A-F]{4})|\\\\U(?:[0-9a-f]{8}|[0-9A-F]{8})|\\\\u\\{(?:[0-9a-f]{1,6}|[0-9A-F]{1,6})\\}|\\\\\\ *\\\n|\\\\[\\\\\\'\\\"abefnrtv]",
+			"patterns": [{}]
+		},
+		"invalid_string_escapes": {
+			"name": "invalid.illegal.character.escape.bespon",
+			"match": "\\\\.|\\\\",
+			"patterns": [{}]
+		}
+	}
+}

@@ -3,179 +3,358 @@
 	"name": "bespon",
 	"scopeName": "source.bespon",
 	"patterns": [
-		{
-			"name": "entity.name.section.start.bespon",
-			"match": "^\\|(?:===){1,30}[\t ]*(?:(\\*)(?=[\t ]*(?:#|$))|(?=[A-Za-z_\"'`]))",
+		{"include": "#float"},
+		{"include": "#integer"},
+		{"include": "#keyword"},
+		{"include": "#reserved_word"},
+		{"include": "#string_unquoted"},
+		{"include": "#alias"},
+		{"include": "#line_comment"},
+		{"include": "#inline_doc_comment"},
+		{"include": "#multiline_doc_comment"},
+		{"include": "#inline_raw_string"},
+		{"include": "#multiline_raw_string"},
+		{"include": "#inline_singledelim_singlequoted_string"},
+		{"include": "#inline_multidelim_singlequoted_string"},
+		{"include": "#multiline_singlequoted_string"},
+		{"include": "#inline_singledelim_doublequoted_string"},
+		{"include": "#inline_multidelim_doublequoted_string"},
+		{"include": "#multiline_doublequoted_string"},
+		{"include": "#path_separator"},
+		{"include": "#keypath_list"},
+		{"include": "#assign_key_val"},
+		{"include": "#inline_list"},
+		{"include": "#inline_dict"},
+		{"include": "#tag"},
+		{"include": "#open_indentation_list"},
+		{"include": "#start_section"},
+		{"include": "#end_section"},
+		{"include": "#invalid"}
+	],
+	"repository": {
+		"keyword": {
+        	"name": "constant.language.bespon",
+			"comment": "'{non_number_keyword}(?!{unquoted_continue_ascii})'.format(**bespon.grammar.RE_GRAMMAR)",
+			"match": "(?:none|true|false)(?![0-9A-Z_a-z])",
+			"patterns": [{}]
+		},
+		"float": {
+			"name": "constant.numeric.float.bespon",
+			"comment": "bespon.grammar.RE_GRAMMAR['float_ascii'].replace('0x', '(0x)')",
+			"match": "(?:[\\+\\-][\\\t\\ ]*)?(?:(0x)_?(?:[0-9a-f]+(?:_[0-9a-f]+)*(?:\\.[0-9a-f]+(?:_[0-9a-f]+)*(?:_?[pP][\\+\\-]?[0-9]+(?:_[0-9]+)*)?|_?[pP][\\+\\-]?[0-9]+(?:_[0-9]+)*)|[0-9A-F]+(?:_[0-9A-F]+)*(?:\\.[0-9A-F]+(?:_[0-9A-F]+)*(?:_?[pP][\\+\\-]?[0-9]+(?:_[0-9]+)*)?|_?[pP][\\+\\-]?[0-9]+(?:_[0-9]+)*))|(?:0|[1-9][0-9]*(?:_[0-9]+)*)(?:\\.[0-9]+(?:_[0-9]+)*(?:_?[eE][\\+\\-]?[0-9]+(?:_[0-9]+)*)?|_?[eE][\\+\\-]?[0-9]+(?:_[0-9]+)*)|(?:inf|nan)(?![0-9A-Z_a-z]))",
 			"captures": {
-				"1": {"name": "keyword.operator.bespon"}
-			}
-		},
-		{
-			"name": "entity.name.section.end.bespon",
-			"match": "^\\|(?:===){1,30}/(?=[\t ]*(?:#|$))"
-		},
-		{
-        	"name": "comment.documentation.block.bespon",
-			"begin": "\\|((?:###){1,30})[\t ]*$",
-			"end": "\\|\\1/",
+					"1": {"name": "storage.type.number.bespon"}
+			},
 			"patterns": [{}]
 		},
-		{
-        	"name":  "string.quoted.single.block.bespon",
-			"begin": "\\|((?:'''){1,30})[\t ]*$",
-			"end": "\\|\\1/",
-			"patterns": [
-				{
-					"include": "#string_escapes"
-				},
-				{
-					"include": "#invalid_string_escapes"
-				}
-			]
-		},
-		{
-        	"name":  "string.quoted.double.block.bespon",
-			"begin": "\\|((?:\"\"\"){1,30})[\t ]*$",
-			"end": "\\|\\1/",
-			"patterns": [
-				{
-					"include": "#string_escapes"
-				},
-				{
-					"include": "#invalid_string_escapes"
-				}
-			]
-		},
-		{
-        	"name":  "string.quoted.literal.block.bespon",
-			"begin": "\\|((?:```){1,30})[\t ]*$",
-			"end": "\\|\\1/",
+		"integer": {
+			"name": "constant.numeric.int.bespon",
+			"comment": "bespon.grammar.RE_GRAMMAR['integer'].replace('0x', '(0x)').replace('0o', '(0o)').replace('0b', '(0b)')",
+			"match": "(?:[\\+\\-][\\\t\\ ]*)?(?:(0x)_?(?:[0-9a-f]+(?:_[0-9a-f]+)*|[0-9A-F]+(?:_[0-9A-F]+)*)|(0o)_?[0-7]+(?:_[0-7]+)*|(0b)_?[01]+(?:_[01]+)*|(?:0|[1-9][0-9]*(?:_[0-9]+)*))",
+			"captures": {
+				"1": {"name": "storage.type.number.bespon"},
+				"2": {"name": "storage.type.number.bespon"},
+				"3": {"name": "storage.type.number.bespon"}
+			},
 			"patterns": [{}]
 		},
-		{
-        	"name": "comment.line",
+		"reserved_word": {
+				"name": "invalid.illegal.constant.language.bespon",
+				"comment": "'{reserved_word}(?!{unquoted_continue_ascii})'.format(**bespon.grammar.RE_GRAMMAR)",
+				"match": "(?:[Nn][Oo][Nn][Ee]|[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee]|(?:[Ii][Nn][Ff]|[Nn][Aa][Nn])[ijkIJK]?)(?![0-9A-Z_a-z])",
+				"patterns": [{}]
+		},
+		"string_unquoted": {
+			"name": "string.unquoted.bespon",
+			"comment": "bespon.grammar.RE_GRAMMAR['unquoted_string_ascii']",
+			"match": "_*[A-Za-z][0-9A-Z_a-z]*",
+			"patterns": [{}]
+		},
+		"alias": {
+			"name": "variable.other.alias.bespon",
+			"comment": "bespon.grammar.RE_GRAMMAR['alias_path_ascii']",
+			"match": "\\$(?:\\~|_|_*[A-Za-z][0-9A-Z_a-z]*)(?:\\._*[A-Za-z][0-9A-Z_a-z]*)*",
+			"patterns": [{}]
+		},
+		"line_comment": {
+        	"name": "comment.line.bespon",
 			"match": "(?<!#)#(?!#).*"
 		},
-		{
+		"inline_doc_comment": {
         	"name": "comment.documentation.inline.bespon",
 			"begin": "(?<!#)((?:###){1,30})(?!#)",
 			"end": "(?<!#)\\1(?!#)",
 			"patterns": [{}]
 		},
-		{
-        	"name":  "string.quoted.single.inline.singledelim.bespon",
-			"begin": "(?<!')('(?='(?!')|(?!')))",
-			"end": "'",
-			"patterns": [
-				{
-					"include": "#string_escapes"
-				},
-				{
-					"include": "#invalid_string_escapes"
-				}
-			]
+		"multiline_doc_comment": {
+        	"name": "comment.documentation.multiline.bespon",
+			"begin": "\\|((?:###){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [{}]
 		},
-		{
-        	"name": "string.quoted.double.inline.singledelim.bespon",
-			"begin": "(?<!\")(\"(?=\"(?!\")|(?!\")))",
-			"end": "\"",
-			"patterns": [
-				{
-					"include": "#string_escapes"
-				},
-				{
-					"include": "#invalid_string_escapes"
-				}
-			]
-		},
-		{
-        	"name": "string.quoted.single.inline.multidelim.bespon",
-			"comment": "This will break when ending delim is preceded by enough escapes",
-			"begin": "(?<!')((?:'''){1,30})(?!')",
-			"end": "(?:(?<!')|(?<=^\\\\')|(?<=[^\\\\]\\\\')|(?<=[^\\\\]\\\\\\\\\\\\')|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\'))\\1(?!')",
-			"patterns": [
-				{
-					"include": "#string_escapes"
-				},
-				{
-					"include": "#invalid_string_escapes"
-				}
-			]
-		},
-		{
-        	"name": "string.quoted.double.inline.multidelim.bespon",
-			"comment": "This will break when ending delim is preceded by enough escapes",
-			"begin": "(?<!\")((?:\"\"\"){1,30})(?!\")",
-			"end": "(?:(?<!\")|(?<=^\\\\\")|(?<=[^\\\\]\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\"))\\1(?!\")",
-			"patterns": [
-				{
-					"include": "#string_escapes"
-				},
-				{
-					"include": "#invalid_string_escapes"
-				}
-			]
-		},
-		{
-        	"name": "string.quoted.literal.inline.bespon",
+		"inline_raw_string": {
+        	"name": "string.quoted.raw.inline.bespon",
 			"begin": "(?<!`)(`{1,2}(?!`)|(?:```){1,30}(?!`))",
 			"end": "(?<!`)\\1(?!`)",
 			"patterns": [{}]
 		},
-		{
-			"name": "constant.numeric.float.bespon",
-			"comment": "'{0}'.format(bespon.grammar.RE_GRAMMAR['float'].replace('0x', '(0x)'))",
-			"match": "(?:(?:[+-][\\\t\\ ]*)?(0x)_?(?:[0-9a-f]+(?:_[0-9a-f]+)*(?:\\.[0-9a-f]+(?:_[0-9a-f]+)*(?:_?[pP][+-]?[0-9]+(?:_[0-9]+)*)?|_?[pP][+-]?[0-9]+(?:_[0-9]+)*)|[0-9A-F]+(?:_[0-9A-F]+)*(?:\\.[0-9A-F]+(?:_[0-9A-F]+)*(?:_?[pP][+-]?[0-9]+(?:_[0-9]+)*)?|_?[pP][+-]?[0-9]+(?:_[0-9]+)*))|(?:[+-][\\\t\\ ]*)?(?:inf|nan)|(?:[+-][\\\t\\ ]*)?(?:0|[1-9][0-9]*(?:_[0-9]+)*)(?:\\.[0-9]+(?:_[0-9]+)*(?:_?[eE][+-]?[0-9]+(?:_[0-9]+)*)?|_?[eE][+-]?[0-9]+(?:_[0-9]+)*))",
-			"captures":
-				{
-					"1": {"name": "storage.type.number.bespon"}
-				}
-		},
-		{
-			"name": "constant.numeric.int.bespon",
-			"comment": "'{0}'.format(bespon.grammar.RE_GRAMMAR['integer'].replace('0x', '(0x)').replace('0o', '(0o)').replace('0b', '(0b)'))",
-			"match": "(?:(?:[+-][\\\t\\ ]*)?(0x)_?(?:[0-9a-f]+(?:_[0-9a-f]+)*|[0-9A-F]+(?:_[0-9A-F]+)*)|(?:[+-][\\\t\\ ]*)?(0o)_?[0-7]+(?:_[0-7]+)*|(?:[+-][\\\t\\ ]*)?(0b)_?[01]+(?:_[01]+)*|(?:[+-][\\\t\\ ]*)?(?:0|[1-9][0-9]*(?:_[0-9]+)*))",
-			"captures":
-				{
-					"1": {"name": "storage.type.number.bespon"},
-					"2": {"name": "storage.type.number.bespon"},
-					"3": {"name": "storage.type.number.bespon"}
-				}
-		},
-		{
-        	"name": "constant.language.bespon",
-			"comment": "'(?:{0}|{1}|{2})(?!{3})'.format(bespon.grammar.RE_GRAMMAR['none_type'], bespon.grammar.RE_GRAMMAR['bool_true'], bespon.grammar.RE_GRAMMAR['bool_false'], bespon.grammar.RE_GRAMMAR['unquoted_continue_ascii'])",
-			"match": "(?:none|true|false)(?![0-9A-Z\\_a-z])"
-		},
-		{
-        	"name": "invalid.illegal.constant.language.bespon",
-			"comment": "'{0}(?!{1})'.format(bespon.grammar.RE_GRAMMAR['reserved_word'], bespon.grammar.RE_GRAMMAR['unquoted_continue_ascii'])",
-			"match": "(?:[Nn][Oo][Nn][Ee]|[Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee]|[Ii][Nn][Ff]|[Nn][Aa][Nn])(?![0-9A-Z\\_a-z])"
-		},
-		{
-			"name": "string.unquoted.key.bespon",
-			"comment": "bespon.grammar.RE_GRAMMAR['unquoted_string_ascii']",
-			"match": "_*[A-Za-z][0-9A-Z\\_a-z]*"
-		},
-		{
-			"name": "keyword.operator.bespon",
-			"match": "^[\t ]*\\*|(?<=[0-9A-Z\\_a-z])\\.(?=[0-9A-Z\\_a-z])|[{}\\[\\]]|=(?![\t ]*=)|,(?![\t ]*,)"
-		},
-		{
-			"name": "invalid.illegal.bespon",
-			"match": "\\r(?!\\n)|[^\t \\n]"
-		}
-	],
-	"repository": {
-		"string_escapes": {
-			"name": "constant.character.escape.bespon",
-			"comment": "'{0}|{1}'.format(bespon.grammar.RE_GRAMMAR['unicode_escape'].split('|\\\\.')[0], '\\\\[{0}]'.format(re.escape(''.join(k[1] for k in bespon.grammar.SHORT_BACKSLASH_UNESCAPES))))",
-			"match": "\\\\x(?:[0-9a-f]{2}|[0-9A-F]{2})|\\\\u(?:[0-9a-f]{4}|[0-9A-F]{4})|\\\\U(?:[0-9a-f]{8}|[0-9A-F]{8})|\\\\u\\{(?:[0-9a-f]{1,6}|[0-9A-F]{1,6})\\}|\\\\\\ *\\\n|\\\\[\\\\\\'\\\"abefnrtv]",
+		"multiline_raw_string": {
+        	"name":  "string.quoted.raw.multiline.bespon",
+			"begin": "\\|((?:```){1,30})[\t ]*$",
+			"end": "\\|\\1/",
 			"patterns": [{}]
 		},
-		"invalid_string_escapes": {
+		"inline_singledelim_singlequoted_string": {
+        	"name":  "string.quoted.single.inline.singledelim.bespon",
+			"begin": "(?<!')('(?='(?!')|(?!')))",
+			"end": "'",
+			"patterns": [
+				{"include": "#backslash_escape"},
+				{"include": "#invalid_backslash_escape"}
+			]
+		},
+		"inline_multidelim_singlequoted_string": {
+        	"name": "string.quoted.single.inline.multidelim.bespon",
+			"comment": "This will break when the ending delim is preceded by an escaped delim character that is itself preceded by a lot of escaped backslashes; the only completely general solution is probably a separate entry for each delim sequence",
+			"begin": "(?<!')((?:'''){1,30})(?!')",
+			"end": "(?:(?<!')|(?<=^\\\\')|(?<=^\\\\\\\\\\\\')|(?<=^\\\\\\\\\\\\\\\\\\\\')|(?<=^\\\\\\\\\\\\\\\\\\\\\\\\\\\\')|(?<=^\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\')|(?<=[^\\\\]\\\\')|(?<=[^\\\\]\\\\\\\\\\\\')|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\')|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\\\\\\\\')|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'))\\1(?!')",
+			"patterns": [
+				{"include": "#backslash_escape"},
+				{"include": "#invalid_backslash_escape"}
+			]
+		},
+		"multiline_singlequoted_string": {
+        	"name":  "string.quoted.single.multiline.bespon",
+			"begin": "\\|((?:'''){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [
+				{"include": "#backslash_escape"},
+				{"include": "#invalid_backslash_escape"}
+			]
+		},
+		"inline_singledelim_doublequoted_string": {
+        	"name": "string.quoted.double.inline.singledelim.bespon",
+			"begin": "(?<!\")(\"(?=\"(?!\")|(?!\")))",
+			"end": "\"",
+			"patterns": [
+				{"include": "#backslash_escape"},
+				{"include": "#invalid_backslash_escape"}
+			]
+		},
+		"inline_multidelim_doublequoted_string": {
+        	"name": "string.quoted.double.inline.multidelim.bespon",
+			"comment": "This will break when the ending delim is preceded by an escaped delim character that is itself preceded by a lot of escaped backslashes; the only completely general solution is probably a separate entry for each delim sequence",
+			"begin": "(?<!\")((?:\"\"\"){1,30})(?!\")",
+			"end": "(?:(?<!\")|(?<=^\\\\\")|(?<=^\\\\\\\\\\\\\")|(?<=^\\\\\\\\\\\\\\\\\\\\\")|(?<=^\\\\\\\\\\\\\\\\\\\\\\\\\\\\\")|(?<=^\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\")|(?<=[^\\\\]\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\\\\\\\\\")|(?<=[^\\\\]\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"))\\1(?!\")",
+			"patterns": [
+				{"include": "#backslash_escape"},
+				{"include": "#invalid_backslash_escape"}
+			]
+		},
+		"multiline_doublequoted_string": {
+        	"name":  "string.quoted.double.multiline.bespon",
+			"begin": "\\|((?:\"\"\"){1,30})[\t ]*$",
+			"end": "\\|\\1/",
+			"patterns": [
+				{"include": "#backslash_escape"},
+				{"include": "#invalid_backslash_escape"}
+			]
+		},
+		"assign_key_val": {
+			"name": "keyword.operator.bespon",
+			"match": "=(?![\t ]*=)",
+			"patterns": [{}]
+		},
+		"inline_element_separator": {
+			"name": "keyword.operator.bespon",
+			"match": ",(?![\t ]*,)",
+			"patterns": [{}]
+		},
+		"path_separator": {
+			"name": "keyword.operator.bespon",
+			"comment": "'(?<={unquoted_continue_ascii}){path_separator}(?={unquoted_start_ascii}|{open_indentation_list})'.format(**bespon.grammar.RE_GRAMMAR)",
+			"match": "(?<=[0-9A-Z_a-z])\\.(?=_*[A-Za-z]|\\*)",
+			"patterns": [{}]
+		},
+		"keypath_list": {
+			"name": "keyword.operator.bespon",
+			"comment": "'(?<={path_separator}){open_indentation_list}(?!{path_separator}|{unquoted_continue_ascii})'.format(**bespon.grammar.RE_GRAMMAR)",
+			"match": "(?<=\\.)\\*(?!\\.|[0-9A-Z_a-z])",
+			"patterns": [{}]
+		},
+		"section_list": {
+			"name": "keyword.operator.bespon",
+			"comment": "'(?<={assign_key_val}|{indent}){open_indentation_list}(?={indent}*(?:{comment_delim}|$))'.format(**bespon.grammar.RE_GRAMMAR)",
+			"match": "(?<=\\=|[\\\t\\ ])\\*(?=[\\\t\\ ]*(?:\\#|$))",
+			"patterns": [{}]
+		},
+		"invalid": {
+			"name": "invalid.illegal.bespon",
+			"match": "\\r(?!\\n)|\\|(.)\\1*|[^\t \\n]",
+			"patterns": [{}]
+		},
+		"open_indentation_list": {
+			"name": "keyword.operator.bespon",
+			"match": "^[\t ]*\\*",
+			"patterns": [{}]
+		},
+		"inline_list": {
+			"name": "meta.inline_list.bespon",
+			"begin": "(\\[)",
+			"end": "(\\])",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"}
+			},
+			"patterns": [
+				{"include": "#keyword"},
+				{"include": "#float"},
+				{"include": "#integer"},
+				{"include": "#reserved_word"},
+				{"include": "#string_unquoted"},
+				{"include": "#alias"},
+				{"include": "#line_comment"},
+				{"include": "#inline_doc_comment"},
+				{"include": "#multiline_doc_comment"},
+				{"include": "#inline_raw_string"},
+				{"include": "#multiline_raw_string"},
+				{"include": "#inline_singledelim_singlequoted_string"},
+				{"include": "#inline_multidelim_singlequoted_string"},
+				{"include": "#multiline_singlequoted_string"},
+				{"include": "#inline_singledelim_doublequoted_string"},
+				{"include": "#inline_multidelim_doublequoted_string"},
+				{"include": "#multiline_doublequoted_string"},
+				{"include": "#assign_key_val"},
+				{"include": "#inline_element_separator"},
+				{"include": "#path_separator"},
+				{"include": "#keypath_list"},
+				{"include": "#inline_list"},
+				{"include": "#inline_dict"},
+				{"include": "#tag"},
+				{"include": "#invalid"}
+			]
+		},
+		"inline_dict": {
+			"name": "meta.inline_dict.bespon",
+			"begin": "(\\{)",
+			"end": "(\\})",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"}
+			},
+			"patterns": [
+				{"include": "#keyword"},
+				{"include": "#float"},
+				{"include": "#integer"},
+				{"include": "#reserved_word"},
+				{"include": "#string_unquoted"},
+				{"include": "#alias"},
+				{"include": "#line_comment"},
+				{"include": "#inline_doc_comment"},
+				{"include": "#multiline_doc_comment"},
+				{"include": "#inline_raw_string"},
+				{"include": "#multiline_raw_string"},
+				{"include": "#inline_singledelim_singlequoted_string"},
+				{"include": "#inline_multidelim_singlequoted_string"},
+				{"include": "#multiline_singlequoted_string"},
+				{"include": "#inline_singledelim_doublequoted_string"},
+				{"include": "#inline_multidelim_doublequoted_string"},
+				{"include": "#multiline_doublequoted_string"},
+				{"include": "#assign_key_val"},
+				{"include": "#inline_element_separator"},
+				{"include": "#path_separator"},
+				{"include": "#keypath_list"},
+				{"include": "#inline_list"},
+				{"include": "#inline_dict"},
+				{"include": "#tag"},
+				{"include": "#invalid"}
+			]
+		},
+		"tag_keyword": {
+			"name": "keyword.other.tag.bespon",
+			"comment": "'{unquoted_string_ascii}(?={indent}*{assign_key_val})'.format(**bespon.grammar.RE_GRAMMAR)",
+			"match": "_*[A-Za-z][0-9A-Z_a-z]*(?=[\\\t\\ ]*\\=)",
+			"patterns": [{}]
+		},
+		"inline_alias_list": {
+			"name": "meta.inline_alias_list.bespon",
+			"begin": "(\\[)",
+			"end": "(\\])",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"}
+			},
+			"patterns": [
+				{"include": "#alias"},
+				{"include": "#line_comment"},
+				{"include": "#inline_element_separator"},
+				{"include": "#invalid"}
+			]
+		},
+		"tag": {
+			"name": "meta.tag.bespon",
+			"comment": "'({start_tag})({indent}*(?:{unquoted_string_ascii})(?!{indent}*{assign_key_val}|{unquoted_continue_ascii}))?'.format(**bespon.grammar.RE_GRAMMAR)",
+			"begin": "(\\()([\\\t\\ ]*(?:_*[A-Za-z][0-9A-Z_a-z]*)(?![\\\t\\ ]*\\=|[0-9A-Z_a-z]))?",
+			"end": "(\\)\\>)",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"},
+				"2": {"name": "storage.type.tag.bespon"}
+			},
+			"patterns": [
+				{"include": "#reserved_word"},
+				{"include": "#tag_keyword"},
+				{"include": "#string_unquoted"},
+				{"include": "#alias"},
+				{"include": "#line_comment"},
+				{"include": "#inline_raw_string"},
+				{"include": "#inline_singledelim_singlequoted_string"},
+				{"include": "#inline_multidelim_singlequoted_string"},
+				{"include": "#inline_singledelim_doublequoted_string"},
+				{"include": "#inline_multidelim_doublequoted_string"},
+				{"include": "#assign_key_val"},
+				{"include": "#inline_element_separator"},
+				{"include": "#inline_alias_list"},
+				{"include": "#invalid"}
+			]
+		},
+		"start_section": {
+			"name": "entity.name.section.start.bespon",
+			"begin": "^(\\|(?:===){1,30})(?!/)",
+			"end": "$",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"}
+			},
+			"patterns": [
+				{"include": "#keyword"},
+				{"include": "#integer"},
+				{"include": "#reserved_word"},
+				{"include": "#string_unquoted"},
+				{"include": "#line_comment"},
+				{"include": "#inline_raw_string"},
+				{"include": "#inline_singledelim_singlequoted_string"},
+				{"include": "#inline_multidelim_singlequoted_string"},
+				{"include": "#inline_singledelim_doublequoted_string"},
+				{"include": "#inline_multidelim_doublequoted_string"},
+				{"include": "#path_separator"},
+				{"include": "#keypath_list"},
+				{"include": "#section_list"},
+				{"include": "#invalid"}
+			]
+		},
+		"end_section": {
+			"name": "entity.name.section.end.bespon",
+			"match": "^(\\|(?:===){1,30}/)(?=[\t ]*(?:#|$))",
+			"captures": {
+				"1": {"name": "keyword.operator.bespon"}
+			},
+			"patterns": [{}]
+		},
+		"backslash_escape": {
+			"name": "constant.character.escape.bespon",
+			"comment": "bespon.grammar.RE_GRAMMAR['escape_valid']",
+			"match": "\\\\(?:x(?:[0-9a-f]{2}|[0-9A-F]{2})|u(?:[0-9a-f]{4}|[0-9A-F]{4})|U(?:[0-9a-f]{8}|[0-9A-F]{8})|u\\{(?:[0-9a-f]{1,6}|[0-9A-F]{1,6})\\}|\\ *\\\n|[\\\\\\'\\\"abefnrtv])",
+			"patterns": [{}]
+		},
+		"invalid_backslash_escape": {
 			"name": "invalid.illegal.character.escape.bespon",
-			"match": "\\\\.|\\\\",
+			"match": "\\\\.|\\\\\\r?\\n|\\\\\\Z",
 			"patterns": [{}]
 		}
 	}
